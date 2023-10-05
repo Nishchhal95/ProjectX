@@ -57,4 +57,9 @@ public class InputManager : MonoBehaviour
     {
         return masterInputActions.Player.Walk.IsPressed();
     }
+
+    public bool IsShootPressed()
+    {
+        return masterInputActions.Player.Shoot.triggered;
+    }
 }

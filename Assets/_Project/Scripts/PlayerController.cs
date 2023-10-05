@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float xMouseSens = 2;
     [SerializeField] private float yMouseSens = 2;
-    [SerializeField] private float moveSpeed = 2;
 
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform playerTransform;
@@ -25,7 +24,6 @@ public class PlayerController : MonoBehaviour
     private bool _jump;
 
     [Header("Movement")]
-    [SerializeField] private bool rawInput;
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
     private float _playerSpeed = 10f;
