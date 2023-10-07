@@ -61,4 +61,39 @@ public class InputManager : MonoBehaviour
     {
         return masterInputActions.Player.Reload.triggered;
     }
+
+    public bool IsPrimaryWeaponKeyPressed()
+    {
+        return masterInputActions.Player.PrimaryWeapon.triggered;
+    }
+
+    public bool IsSecondaryWeaponKeyPressed()
+    {
+        return masterInputActions.Player.SecondaryWeapon.triggered;
+    }
+
+    public bool IsMeleeWeaponKeyPressed()
+    {
+        return masterInputActions.Player.MeleeWeapon.triggered;
+    }
+
+    public bool IsAbility1KeyPressed()
+    {
+        return masterInputActions.Player.Ability1.triggered;
+    }
+
+    public bool IsAbility2KeyPressed()
+    {
+        return masterInputActions.Player.Ability2.triggered;
+    }
+
+    public bool IsAbility3KeyPressed()
+    {
+        return masterInputActions.Player.Ability3.triggered;
+    }
+
+    public bool IsAbility4KeyPressed()
+    {
+        return masterInputActions.Player.Ability4.triggered;
+    }
 }

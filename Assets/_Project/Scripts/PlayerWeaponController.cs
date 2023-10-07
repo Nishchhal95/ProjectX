@@ -12,36 +12,75 @@ public class PlayerWeaponController : NetworkBehaviour
 
     [SerializeField] private WeaponController equippedWeapon;
 
-    private InputManager inputManager;
+    [SerializeField] private WeaponController primaryWeapon;
+    [SerializeField] private WeaponController secondaryWeapon;
+    [SerializeField] private WeaponController meleeWeapon;
 
-    public override void OnNetworkSpawn()
-    {
-        if (IsLocalPlayer)
-        {
-            cameraTranform.gameObject.SetActive(true);
-            equippedWeapon = new WeaponController(new Weapon
-            {
-                Damage = 30,
-                FireRate = 1,
-                MagCapacity = 30,
-                TotalAmmo = 60
-            });
-        }
-    }
+    [SerializeField] private WeaponData[] weaponDatas;
+
+    private InputManager inputManager;
 
     private void Start()
     {
         inputManager = InputManager.Instance;
+        primaryWeapon = new VandalWeaponController(weaponDatas[0]);
+        EquipWeapon(primaryWeapon);
     }
 
     private void Update()
     {
-        if (!IsLocalPlayer)
+        HandleWeaponSwitching();
+        HandleShooting();
+        HandleReloading();
+    }
+
+    private void HandleWeaponSwitching()
+    {
+        if(inputManager.IsPrimaryWeaponKeyPressed())
+        {
+            if(primaryWeapon == null)
+            {
+                primaryWeapon = new VandalWeaponController(weaponDatas[0]);
+            }
+            EquipWeapon(primaryWeapon);
+        }
+
+        if (inputManager.IsSecondaryWeaponKeyPressed())
+        {
+            if (secondaryWeapon == null)
+            {
+                secondaryWeapon = new GlockWeaponController(weaponDatas[1]);
+            }
+            EquipWeapon(secondaryWeapon);
+        }
+
+        if (inputManager.IsMeleeWeaponKeyPressed())
+        {
+            if (meleeWeapon == null)
+            {
+                meleeWeapon = new GlockWeaponController(weaponDatas[2]);
+            }
+            EquipWeapon(meleeWeapon);
+        }
+    }
+
+    private void EquipWeapon(WeaponController weaponController)
+    {
+        if(equippedWeapon?.weaponID == weaponController?.weaponID)
         {
             return;
         }
-        HandleShooting();
-        HandleReloading();
+
+        if (weaponHolderTransform.childCount > 0)
+        {
+            Destroy(weaponHolderTransform.GetChild(0).gameObject);
+        }
+
+        equippedWeapon = weaponController;
+        equippedWeapon.Equipped();
+        GameObject weaponModel = Instantiate(equippedWeapon.modelPrefab, weaponHolderTransform);
+        weaponModel.transform.localPosition = Vector3.zero;
+        weaponModel.transform.localRotation = Quaternion.identity;
     }
 
     private void HandleReloading()
@@ -61,25 +100,23 @@ public class PlayerWeaponController : NetworkBehaviour
             return;
         }
 
-        equippedWeapon.Shoot();
-        Shoot();
+        ProcessShot(equippedWeapon.Shoot(cameraTranform, hittableMask));
     }
 
-    private void Shoot()
+    private void ProcessShot(GameObject shotObject)
     {
-        if (Physics.Raycast(cameraTranform.position,
-            cameraTranform.forward, out RaycastHit hit, 1000f, hittableMask))
+        if(shotObject == null)
         {
-            // If I hit a player then damage them
-            if(hit.collider.gameObject.TryGetComponent(out PlayerStatsController playerStatsController))
-            {
-                DamageOpponentServerRpc(30, NetworkObjectId, playerStatsController.NetworkObjectId);
-            }
-            else
-            {
-                //Spawn a bullet hole
+            return;
+        }
+        if (shotObject.TryGetComponent(out PlayerStatsController playerStatsController))
+        {
+            DamageOpponentServerRpc(30, NetworkObjectId, playerStatsController.NetworkObjectId);
+        }
+        else
+        {
+            //Spawn a bullet hole
 
-            }
         }
     }
 
@@ -94,6 +131,6 @@ public class PlayerWeaponController : NetworkBehaviour
     private void DamageTakenClientRpc(int damageAmount, ulong sourceNetworkObjectId, ulong targetNetworkObjectId)
     {
         Debug.Log($"CLIENT--: {sourceNetworkObjectId} did {damageAmount} damage to {targetNetworkObjectId}");
-        PlayerStatsController.playerStatsSystems[targetNetworkObjectId].TakeDamage(damageAmount);
+        PlayerNetworkController.GetPlayerNetworkController(targetNetworkObjectId).PlayerStatsController.TakeDamage(damageAmount);
     }
 }

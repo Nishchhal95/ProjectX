@@ -12,17 +12,7 @@ public class PlayerStatsController : NetworkBehaviour
     [SerializeField] private HealthView healthView;
 
     public static Action<int, int> OnLocalPlayerHealthChanged;
-    public static Dictionary<ulong, PlayerStatsController> playerStatsSystems = new Dictionary<ulong, PlayerStatsController>();
 
-    public override void OnNetworkSpawn()
-    {
-        playerStatsSystems.Add(NetworkObjectId, this);
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        playerStatsSystems.Remove(NetworkObjectId);
-    }
 
     private void Start()
     {

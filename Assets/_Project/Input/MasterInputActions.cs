@@ -73,6 +73,69 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""PrimaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""b81da702-595c-4d1e-81fa-8d2650371223"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a2334b3-1643-44fe-90d9-24e1e1740369"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""f62ee31d-4011-4ee4-a90e-f6513e43a193"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability1"",
+                    ""type"": ""Button"",
+                    ""id"": ""982a7d15-60fd-4a1b-92e6-951093cc4480"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability2"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ab97ff2-c683-41f3-ac0c-18952d61ba8f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability3"",
+                    ""type"": ""Button"",
+                    ""id"": ""46c9ed09-1697-4cc8-83c0-17687b72195c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability4"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d53d333-a7fa-48f4-96c4-5cd16ec33632"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Look"",
                     ""type"": ""PassThrough"",
                     ""id"": ""0d584b4a-b0f0-4ca5-9a44-a2b50fa60889"",
@@ -192,6 +255,83 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8d3abb6-137e-486c-90eb-cfec04285214"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f4361511-8dd8-4545-a8b8-da21a1b58c6d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""775cf48b-fb17-4780-a51d-15a7a8347ca8"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e72d0932-b90f-405d-8428-81a032a12e9e"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12677aee-f6f8-41c6-a486-4972099a58b1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6499afd3-0095-4b7a-850c-9fa27fc13103"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e10582f-4fe1-490c-a1fc-78388ca5f1fa"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -205,6 +345,13 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_PrimaryWeapon = m_Player.FindAction("PrimaryWeapon", throwIfNotFound: true);
+        m_Player_SecondaryWeapon = m_Player.FindAction("SecondaryWeapon", throwIfNotFound: true);
+        m_Player_MeleeWeapon = m_Player.FindAction("MeleeWeapon", throwIfNotFound: true);
+        m_Player_Ability1 = m_Player.FindAction("Ability1", throwIfNotFound: true);
+        m_Player_Ability2 = m_Player.FindAction("Ability2", throwIfNotFound: true);
+        m_Player_Ability3 = m_Player.FindAction("Ability3", throwIfNotFound: true);
+        m_Player_Ability4 = m_Player.FindAction("Ability4", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
     }
 
@@ -272,6 +419,13 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_PrimaryWeapon;
+    private readonly InputAction m_Player_SecondaryWeapon;
+    private readonly InputAction m_Player_MeleeWeapon;
+    private readonly InputAction m_Player_Ability1;
+    private readonly InputAction m_Player_Ability2;
+    private readonly InputAction m_Player_Ability3;
+    private readonly InputAction m_Player_Ability4;
     private readonly InputAction m_Player_Look;
     public struct PlayerActions
     {
@@ -282,6 +436,13 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @PrimaryWeapon => m_Wrapper.m_Player_PrimaryWeapon;
+        public InputAction @SecondaryWeapon => m_Wrapper.m_Player_SecondaryWeapon;
+        public InputAction @MeleeWeapon => m_Wrapper.m_Player_MeleeWeapon;
+        public InputAction @Ability1 => m_Wrapper.m_Player_Ability1;
+        public InputAction @Ability2 => m_Wrapper.m_Player_Ability2;
+        public InputAction @Ability3 => m_Wrapper.m_Player_Ability3;
+        public InputAction @Ability4 => m_Wrapper.m_Player_Ability4;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -307,6 +468,27 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @PrimaryWeapon.started += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled += instance.OnPrimaryWeapon;
+            @SecondaryWeapon.started += instance.OnSecondaryWeapon;
+            @SecondaryWeapon.performed += instance.OnSecondaryWeapon;
+            @SecondaryWeapon.canceled += instance.OnSecondaryWeapon;
+            @MeleeWeapon.started += instance.OnMeleeWeapon;
+            @MeleeWeapon.performed += instance.OnMeleeWeapon;
+            @MeleeWeapon.canceled += instance.OnMeleeWeapon;
+            @Ability1.started += instance.OnAbility1;
+            @Ability1.performed += instance.OnAbility1;
+            @Ability1.canceled += instance.OnAbility1;
+            @Ability2.started += instance.OnAbility2;
+            @Ability2.performed += instance.OnAbility2;
+            @Ability2.canceled += instance.OnAbility2;
+            @Ability3.started += instance.OnAbility3;
+            @Ability3.performed += instance.OnAbility3;
+            @Ability3.canceled += instance.OnAbility3;
+            @Ability4.started += instance.OnAbility4;
+            @Ability4.performed += instance.OnAbility4;
+            @Ability4.canceled += instance.OnAbility4;
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
@@ -329,6 +511,27 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @PrimaryWeapon.started -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled -= instance.OnPrimaryWeapon;
+            @SecondaryWeapon.started -= instance.OnSecondaryWeapon;
+            @SecondaryWeapon.performed -= instance.OnSecondaryWeapon;
+            @SecondaryWeapon.canceled -= instance.OnSecondaryWeapon;
+            @MeleeWeapon.started -= instance.OnMeleeWeapon;
+            @MeleeWeapon.performed -= instance.OnMeleeWeapon;
+            @MeleeWeapon.canceled -= instance.OnMeleeWeapon;
+            @Ability1.started -= instance.OnAbility1;
+            @Ability1.performed -= instance.OnAbility1;
+            @Ability1.canceled -= instance.OnAbility1;
+            @Ability2.started -= instance.OnAbility2;
+            @Ability2.performed -= instance.OnAbility2;
+            @Ability2.canceled -= instance.OnAbility2;
+            @Ability3.started -= instance.OnAbility3;
+            @Ability3.performed -= instance.OnAbility3;
+            @Ability3.canceled -= instance.OnAbility3;
+            @Ability4.started -= instance.OnAbility4;
+            @Ability4.performed -= instance.OnAbility4;
+            @Ability4.canceled -= instance.OnAbility4;
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
@@ -356,6 +559,13 @@ public partial class @MasterInputActions: IInputActionCollection2, IDisposable
         void OnWalk(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnPrimaryWeapon(InputAction.CallbackContext context);
+        void OnSecondaryWeapon(InputAction.CallbackContext context);
+        void OnMeleeWeapon(InputAction.CallbackContext context);
+        void OnAbility1(InputAction.CallbackContext context);
+        void OnAbility2(InputAction.CallbackContext context);
+        void OnAbility3(InputAction.CallbackContext context);
+        void OnAbility4(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
     }
 }
