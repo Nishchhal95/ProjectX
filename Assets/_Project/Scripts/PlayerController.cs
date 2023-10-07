@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     [SerializeField] private float xMouseSens = 2;
     [SerializeField] private float yMouseSens = 2;
@@ -45,6 +46,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!IsLocalPlayer)
+        {
+            return;
+        }
         GroundCheck();
         Jump();
         ApplyGravity();

@@ -1,13 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerStatsController : MonoBehaviour
+public class PlayerStatsController : NetworkBehaviour
 {
     private int MAX_HEALTH = 100;
     private int currentHealth = 0;
 
     [SerializeField] private HealthView healthView;
+
+    public static Action<int, int> OnLocalPlayerHealthChanged;
+    public static Dictionary<ulong, PlayerStatsController> playerStatsSystems = new Dictionary<ulong, PlayerStatsController>();
+
+    public override void OnNetworkSpawn()
+    {
+        playerStatsSystems.Add(NetworkObjectId, this);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        playerStatsSystems.Remove(NetworkObjectId);
+    }
 
     private void Start()
     {
@@ -16,6 +31,10 @@ public class PlayerStatsController : MonoBehaviour
 
     private void Update()
     {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
         if (Input.GetKeyUp(KeyCode.P))
         {
             TakeDamage(10);
@@ -49,7 +68,11 @@ public class PlayerStatsController : MonoBehaviour
 
     private void UpdateUI()
     {
-        healthView.UpdateUI(currentHealth, MAX_HEALTH);
+        if(!IsLocalPlayer)
+        {
+            return;
+        }
+        OnLocalPlayerHealthChanged?.Invoke(currentHealth, MAX_HEALTH);
     }
 
     private void SetHealth(int health)

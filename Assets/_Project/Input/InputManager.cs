@@ -9,10 +9,6 @@ public class InputManager : MonoBehaviour
     }
     private MasterInputActions masterInputActions;
 
-    public bool jump1;
-    public bool jump2;
-    public bool jump3;
-
     private void Awake()
     {
         if(instance == null)
@@ -59,5 +55,10 @@ public class InputManager : MonoBehaviour
     public bool IsShootPressed()
     {
         return masterInputActions.Player.Shoot.triggered;
+    }
+
+    public bool IsReloadPressed()
+    {
+        return masterInputActions.Player.Reload.triggered;
     }
 }
