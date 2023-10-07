@@ -223,7 +223,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7ae3dc415bc9645a5a795a6f35a242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behavioursToToggle: []
+  behavioursToToggle:
+  - {fileID: 5460993697331194953}
+  - {fileID: 4960763088692808392}
+  - {fileID: 1253615238395133032}
+  - {fileID: 7616002281557381898}
+  - {fileID: 4372786069644809567}
+  - {fileID: 2654372898655241722}
   gameObjectsToToggle: []
 --- !u!114 &5460993697331194953
 MonoBehaviour:

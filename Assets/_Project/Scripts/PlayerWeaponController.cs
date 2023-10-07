@@ -58,7 +58,7 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             if (meleeWeapon == null)
             {
-                meleeWeapon = new GlockWeaponController(weaponDatas[2]);
+                meleeWeapon = new MeleeWeaponController(weaponDatas[2]);
             }
             EquipWeapon(meleeWeapon);
         }
@@ -102,7 +102,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
         ProcessShot(equippedWeapon.Shoot(cameraTranform, hittableMask));
     }
-
+ 
     private void ProcessShot(GameObject shotObject)
     {
         if(shotObject == null)
@@ -111,7 +111,7 @@ public class PlayerWeaponController : NetworkBehaviour
         }
         if (shotObject.TryGetComponent(out PlayerStatsController playerStatsController))
         {
-            DamageOpponentServerRpc(30, NetworkObjectId, playerStatsController.NetworkObjectId);
+            DamageOpponentServerRpc(equippedWeapon.damage, NetworkObjectId, playerStatsController.NetworkObjectId);
         }
         else
         {

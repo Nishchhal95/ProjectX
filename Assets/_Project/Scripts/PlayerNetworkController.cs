@@ -43,6 +43,6 @@ public class PlayerNetworkController : NetworkBehaviour
 
     public static PlayerNetworkController GetPlayerNetworkController(ulong networkObjectId)
     {
-        return playerNetworkControllers.ContainsKey(networkObjectId) ? null : playerNetworkControllers[networkObjectId];
+        return playerNetworkControllers.ContainsKey(networkObjectId) ? playerNetworkControllers[networkObjectId] : null;
     }
 }

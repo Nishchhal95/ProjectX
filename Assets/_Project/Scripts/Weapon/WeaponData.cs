@@ -6,9 +6,11 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     public int weaponID;
+    public string weaponName;
     public GameObject modelPrefab;
     public int damage;
     public float fireRate;
+    public float attackDistance;
     public int totalAmmo;
     public int magCapacity;
 }

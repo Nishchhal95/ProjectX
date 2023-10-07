@@ -19,6 +19,16 @@ public class AmmoView : MonoBehaviour
 
     private void UpadteWeaponUI(int currentBullets, int magSize)
     {
+        if(currentBullets < 0 || magSize < 0) 
+        {
+            ammoText.gameObject.SetActive(false);
+            return;
+        }
+
+        if (!ammoText.gameObject.activeSelf)
+        {
+            ammoText.gameObject.SetActive(true);
+        }
         ammoText.SetText($"{currentBullets} / {magSize}");
     }
 }

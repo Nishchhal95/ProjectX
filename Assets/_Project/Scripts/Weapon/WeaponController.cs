@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 public abstract class WeaponController
 {
     public int weaponID;
+    public string weaponName;
 
     public GameObject modelPrefab;
     public int damage;
     public float fireRate;
+    public float attackDistance;
     public int totalAmmo;
     public int magCapacity;
     public int currentBulletCountInMag;
@@ -27,6 +27,8 @@ public abstract class WeaponController
         fireRate = weaponData.fireRate;
         totalAmmo = weaponData.totalAmmo;
         magCapacity = weaponData.magCapacity;
+        weaponName = weaponData.weaponName;
+        attackDistance = weaponData.attackDistance;
 
         currentBulletCountInMag = magCapacity;
         totalAmmo -= magCapacity;
@@ -39,7 +41,7 @@ public abstract class WeaponController
         OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
     }
 
-    public bool CanShoot()
+    public virtual bool CanShoot()
     {
         return currentBulletCountInMag > 0;
     }
@@ -48,7 +50,7 @@ public abstract class WeaponController
     {
         currentBulletCountInMag--;
         OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
-        if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, 1000f, hittableMask))
+        if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, attackDistance, hittableMask))
         {
             return hit.collider.gameObject;
         }
