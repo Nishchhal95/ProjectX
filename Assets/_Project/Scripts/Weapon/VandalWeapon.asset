@@ -20,3 +20,5 @@ MonoBehaviour:
   totalAmmo: 90
   magCapacity: 30
   reloadAble: 1
+  shotSound: {fileID: 8300000, guid: b378503039e05214f8fd7f73cd6d6e1c, type: 3}
+  reloadSound: {fileID: 8300000, guid: 1775bcc648d39064bb38dc1fc70daaa7, type: 3}

@@ -118,7 +118,7 @@ public class PlayerController : NetworkBehaviour
 
         if (Vector2.Distance(playerTransform.rotation.eulerAngles, finalPlayerRotation) > 50f)
         {
-            Debug.Log($"Prev Player Rot {playerTransform.rotation.eulerAngles} and now {finalPlayerRotation}");
+            Debug.Log($"Prev Player Rot {playerTransform.rotation.eulerAngles} and now {finalPlayerRotation} and {mouseDelta.x} original mouse {inputManager.GetMouseDelta().x}");
         }
         cameraTransform.rotation = Quaternion.Euler(finalCameraRotation);
         playerTransform.rotation = Quaternion.Euler(finalPlayerRotation);

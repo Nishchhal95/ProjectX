@@ -20,6 +20,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     //TODO: Maybe also look into making this dynamic.
     [SerializeField] private WeaponController[] weaponControllers;
+    [SerializeField] private AudioSource audioSource;
 
     private InputManager inputManager;
 
@@ -76,10 +77,17 @@ public class PlayerWeaponController : NetworkBehaviour
 
     private void HandleWeaponAttack()
     {
-        if (inputManager.IsShootPressed())
+        if(equippedWeapon == null)
+        {
+            return;
+        }
+
+        if (inputManager.IsShootPressed() && equippedWeapon.CanShoot())
         {
             //TODO : Maybe use an interface here, in case in future if we want to make other things damageable too.
             HandleDealingDamage(equippedWeapon.Attack(cameraTranform, hittableMask));
+            audioSource.clip = equippedWeapon.weaponData.shotSound;
+            audioSource.Play();
         }
     }
 
@@ -88,6 +96,8 @@ public class PlayerWeaponController : NetworkBehaviour
         if (inputManager.IsReloadPressed())
         {
             equippedWeapon.Reload();
+            audioSource.clip = equippedWeapon.weaponData.reloadSound;
+            audioSource.Play();
         }
     }
 
@@ -100,14 +110,15 @@ public class PlayerWeaponController : NetworkBehaviour
         OnNewWeaponEquipped?.Invoke(equippedWeapon.CurrentBulletCountInMag, equippedWeapon.TotalAmmo);
     }
 
-    private void HandleDealingDamage(GameObject shotObject)
+    private void HandleDealingDamage(HitInfo hitInfo)
     {
-        if (shotObject == null)
+        if (hitInfo == null)
         {
             return;
         }
-        if (shotObject.TryGetComponent(out PlayerStatsController playerStatsController))
+        if (hitInfo.HitObject.TryGetComponent(out PlayerStatsController playerStatsController))
         {
+            //TODO : Fix Self damage lol
             DamageOpponentServerRpc(equippedWeapon.Damage, NetworkObjectId, playerStatsController.NetworkObjectId);
         }
         else

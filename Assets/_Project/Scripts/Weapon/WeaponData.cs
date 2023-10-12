@@ -13,4 +13,7 @@ public class WeaponData : ScriptableObject
     public int totalAmmo;
     public int magCapacity;
     public bool reloadAble;
+
+    public AudioClip shotSound;
+    public AudioClip reloadSound;
 }

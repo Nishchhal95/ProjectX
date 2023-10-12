@@ -9,14 +9,15 @@ public abstract class WeaponController : MonoBehaviour
 
     public WeaponData weaponData;
 
-    public int WeaponID {  get; private set; }
-    public string WeaponName { get; private set; }
-    public int Damage { get; private set; }
-    public float FireRate { get; private set; }
-    public float AttackDistance { get; private set; }
-    public int TotalAmmo { get; private set; }
-    public int MagCapacity { get; private set; }
-    public bool ReloadAble { get; private set; }
+    [field: SerializeField] public int WeaponID {  get; private set; }
+    [field: SerializeField]public string WeaponName { get; private set; }
+    [field: SerializeField]public int Damage { get; private set; }
+    [field: SerializeField]public float FireRate { get; private set; }
+    [field: SerializeField]public float AttackDistance { get; private set; }
+    [field: SerializeField]public int TotalAmmo { get; private set; }
+    [field: SerializeField]public int MagCapacity { get; private set; }
+    [field: SerializeField]public bool ReloadAble { get; private set; }
+
     public int CurrentBulletCountInMag { 
         get 
         { 
@@ -45,12 +46,27 @@ public abstract class WeaponController : MonoBehaviour
         TotalAmmo -= MagCapacity;
     }
 
-    public virtual GameObject Attack (Transform shootPoint, LayerMask hittableMask)
+    //TODO : Introduce a GunWeaponController for guns which would segregate it from being a knife or something else.
+    public bool CanShoot()
     {
+        return currentBulletCountInMag > 0;
+    }
+
+    public virtual HitInfo Attack (Transform shootPoint, LayerMask hittableMask)
+    {
+        //TODO : Introduce a GunWeaponController for guns which would segregate it from being a knife or something else.
+        if (!CanShoot() && ReloadAble)
+        {
+            return null;
+        }
         CurrentBulletCountInMag--;
         if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, AttackDistance, hittableMask))
         {
-            return hit.collider.gameObject;
+            return new HitInfo()
+            {
+                HitObject = hit.collider.gameObject,
+                HitPoint = hit.point
+            };
         }
 
         return null;
@@ -78,4 +94,10 @@ public abstract class WeaponController : MonoBehaviour
         TotalAmmo -= bulletsToTakeFromTotalAmmo;
         CurrentBulletCountInMag += bulletsToTakeFromTotalAmmo;
     }
+}
+
+public class HitInfo
+{
+    public GameObject HitObject { get; set; }
+    public Vector3 HitPoint { get; set; }
 }
