@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerWeaponController : NetworkBehaviour
 {
+    public static event Action<int, int> OnNewWeaponEquipped;
+
     [SerializeField] private Transform weaponHolderTransform;
     [SerializeField] private Transform cameraTranform;
     [SerializeField] private LayerMask hittableMask;
@@ -16,102 +18,97 @@ public class PlayerWeaponController : NetworkBehaviour
     [SerializeField] private WeaponController secondaryWeapon;
     [SerializeField] private WeaponController meleeWeapon;
 
-    [SerializeField] private WeaponData[] weaponDatas;
+    //TODO: Maybe also look into making this dynamic.
+    [SerializeField] private WeaponController[] weaponControllers;
 
     private InputManager inputManager;
 
     private void Start()
     {
         inputManager = InputManager.Instance;
-        primaryWeapon = new VandalWeaponController(weaponDatas[0]);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        SetupWeapons();
+    }
+
+    private void SetupWeapons()
+    {
+        primaryWeapon = Instantiate(weaponControllers[0], weaponHolderTransform);
+        secondaryWeapon = Instantiate(weaponControllers[1], weaponHolderTransform);
+        meleeWeapon = Instantiate(weaponControllers[2], weaponHolderTransform);
+
+        primaryWeapon.Init();
+        secondaryWeapon.Init();
+        meleeWeapon.Init();
+
+        secondaryWeapon.gameObject.SetActive(false);
+        meleeWeapon.gameObject.SetActive(false);
+
         EquipWeapon(primaryWeapon);
     }
 
     private void Update()
     {
         HandleWeaponSwitching();
-        HandleShooting();
-        HandleReloading();
+        HandleWeaponAttack();
+        HandleReload();
     }
 
     private void HandleWeaponSwitching()
     {
-        if(inputManager.IsPrimaryWeaponKeyPressed())
+        if (inputManager.IsPrimaryWeaponKeyPressed())
         {
-            if(primaryWeapon == null)
-            {
-                primaryWeapon = new VandalWeaponController(weaponDatas[0]);
-            }
             EquipWeapon(primaryWeapon);
         }
 
         if (inputManager.IsSecondaryWeaponKeyPressed())
         {
-            if (secondaryWeapon == null)
-            {
-                secondaryWeapon = new GlockWeaponController(weaponDatas[1]);
-            }
             EquipWeapon(secondaryWeapon);
         }
 
         if (inputManager.IsMeleeWeaponKeyPressed())
         {
-            if (meleeWeapon == null)
-            {
-                meleeWeapon = new MeleeWeaponController(weaponDatas[2]);
-            }
             EquipWeapon(meleeWeapon);
         }
     }
 
-    private void EquipWeapon(WeaponController weaponController)
+    private void HandleWeaponAttack()
     {
-        if(equippedWeapon?.weaponID == weaponController?.weaponID)
+        if (inputManager.IsShootPressed())
         {
-            return;
+            //TODO : Maybe use an interface here, in case in future if we want to make other things damageable too.
+            HandleDealingDamage(equippedWeapon.Attack(cameraTranform, hittableMask));
         }
-
-        if (weaponHolderTransform.childCount > 0)
-        {
-            Destroy(weaponHolderTransform.GetChild(0).gameObject);
-        }
-
-        equippedWeapon = weaponController;
-        equippedWeapon.Equipped();
-        GameObject weaponModel = Instantiate(equippedWeapon.modelPrefab, weaponHolderTransform);
-        weaponModel.transform.localPosition = Vector3.zero;
-        weaponModel.transform.localRotation = Quaternion.identity;
     }
 
-    private void HandleReloading()
+    private void HandleReload()
     {
-        if (!inputManager.IsReloadPressed() || equippedWeapon == null)
+        if (inputManager.IsReloadPressed())
         {
-            return;
+            equippedWeapon.Reload();
         }
-
-        equippedWeapon.Reload();
     }
 
-    private void HandleShooting()
+    private void EquipWeapon(WeaponController weapon)
     {
-        if(!inputManager.IsShootPressed() || equippedWeapon == null || !equippedWeapon.CanShoot())
-        {
-            return;
-        }
+        equippedWeapon?.gameObject.SetActive(false);
 
-        ProcessShot(equippedWeapon.Shoot(cameraTranform, hittableMask));
+        equippedWeapon = weapon;
+        equippedWeapon.gameObject.SetActive(true);
+        OnNewWeaponEquipped?.Invoke(equippedWeapon.CurrentBulletCountInMag, equippedWeapon.TotalAmmo);
     }
- 
-    private void ProcessShot(GameObject shotObject)
+
+    private void HandleDealingDamage(GameObject shotObject)
     {
-        if(shotObject == null)
+        if (shotObject == null)
         {
             return;
         }
         if (shotObject.TryGetComponent(out PlayerStatsController playerStatsController))
         {
-            DamageOpponentServerRpc(equippedWeapon.damage, NetworkObjectId, playerStatsController.NetworkObjectId);
+            DamageOpponentServerRpc(equippedWeapon.Damage, NetworkObjectId, playerStatsController.NetworkObjectId);
         }
         else
         {

@@ -3,54 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WeaponController
+public abstract class WeaponController : MonoBehaviour
 {
-    public int weaponID;
-    public string weaponName;
-
-    public GameObject modelPrefab;
-    public int damage;
-    public float fireRate;
-    public float attackDistance;
-    public int totalAmmo;
-    public int magCapacity;
-    public int currentBulletCountInMag;
-
-
     public static event Action<int, int> OnCurrentWeaponDataChanged;
 
-    public WeaponController(WeaponData weaponData)
+    public WeaponData weaponData;
+
+    public int WeaponID {  get; private set; }
+    public string WeaponName { get; private set; }
+    public int Damage { get; private set; }
+    public float FireRate { get; private set; }
+    public float AttackDistance { get; private set; }
+    public int TotalAmmo { get; private set; }
+    public int MagCapacity { get; private set; }
+    public bool ReloadAble { get; private set; }
+    public int CurrentBulletCountInMag { 
+        get 
+        { 
+            return currentBulletCountInMag; 
+        } 
+        set 
+        { 
+            currentBulletCountInMag = value;
+            OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, TotalAmmo);
+        } 
+    }
+    private int currentBulletCountInMag;
+
+    public void Init()
     {
-        weaponID = weaponData.weaponID;
-        modelPrefab = weaponData.modelPrefab;
-        damage = weaponData.damage;
-        fireRate = weaponData.fireRate;
-        totalAmmo = weaponData.totalAmmo;
-        magCapacity = weaponData.magCapacity;
-        weaponName = weaponData.weaponName;
-        attackDistance = weaponData.attackDistance;
+        WeaponID = weaponData.weaponID;
+        Damage = weaponData.damage;
+        FireRate = weaponData.fireRate;
+        TotalAmmo = weaponData.totalAmmo;
+        MagCapacity = weaponData.magCapacity;
+        WeaponName = weaponData.weaponName;
+        AttackDistance = weaponData.attackDistance;
+        ReloadAble = weaponData.reloadAble;
 
-        currentBulletCountInMag = magCapacity;
-        totalAmmo -= magCapacity;
-
-        OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
+        CurrentBulletCountInMag = MagCapacity;
+        TotalAmmo -= MagCapacity;
     }
 
-    public void Equipped()
+    public virtual GameObject Attack (Transform shootPoint, LayerMask hittableMask)
     {
-        OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
-    }
-
-    public virtual bool CanShoot()
-    {
-        return currentBulletCountInMag > 0;
-    }
-
-    public virtual GameObject Shoot(Transform shootPoint, LayerMask hittableMask)
-    {
-        currentBulletCountInMag--;
-        OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
-        if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, attackDistance, hittableMask))
+        CurrentBulletCountInMag--;
+        if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, AttackDistance, hittableMask))
         {
             return hit.collider.gameObject;
         }
@@ -60,22 +58,24 @@ public abstract class WeaponController
 
     public virtual void Reload()
     {
-        if(currentBulletCountInMag == magCapacity) 
+        if (!ReloadAble)
+        {
+            return;
+        }
+        if(CurrentBulletCountInMag == MagCapacity) 
         {
             Debug.Log("No need to reload...");
             return;
         }
 
-        if(totalAmmo <= 0) 
+        if(TotalAmmo <= 0) 
         {
             Debug.Log("Cant reload, not enough bullets...");
             return;
         }
 
-        int bulletsToTakeFromTotalAmmo = magCapacity - currentBulletCountInMag;
-        totalAmmo -= bulletsToTakeFromTotalAmmo;
-        currentBulletCountInMag += bulletsToTakeFromTotalAmmo;
-
-        OnCurrentWeaponDataChanged?.Invoke(currentBulletCountInMag, totalAmmo);
+        int bulletsToTakeFromTotalAmmo = MagCapacity - CurrentBulletCountInMag;
+        TotalAmmo -= bulletsToTakeFromTotalAmmo;
+        CurrentBulletCountInMag += bulletsToTakeFromTotalAmmo;
     }
 }

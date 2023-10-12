@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class PlayerNetworkController : NetworkBehaviour
 {
-    [SerializeField] private Behaviour[] behavioursToToggle;
-    [SerializeField] private GameObject[] gameObjectsToToggle;
+    [SerializeField] private Behaviour[] behavioursToEnableForLocalPlayer;
+    [SerializeField] private GameObject[] gameObjectsToEnableForLocalPlayer;
+    [SerializeField] private GameObject[] gameObjectsToDisableForLocalPlayer;
 
     public PlayerController PlayerController { get; set; }
     public PlayerWeaponController PlayerWeaponController { get; set; }
@@ -16,15 +17,20 @@ public class PlayerNetworkController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        for (int i = 0; i < behavioursToToggle.Length; i++)
+        for (int i = 0; i < behavioursToEnableForLocalPlayer.Length; i++)
         {
-            behavioursToToggle[i].enabled = IsLocalPlayer;
+            behavioursToEnableForLocalPlayer[i].enabled = IsLocalPlayer;
         }
 
-        for (int i = 0; i < gameObjectsToToggle.Length; i++)
+        for (int i = 0; i < gameObjectsToEnableForLocalPlayer.Length; i++)
         {
-            gameObjectsToToggle[i].SetActive(IsLocalPlayer);
-        };
+            gameObjectsToEnableForLocalPlayer[i].SetActive(IsLocalPlayer);
+        }
+
+        for (int i = 0; i < gameObjectsToDisableForLocalPlayer.Length; i++)
+        {
+            gameObjectsToDisableForLocalPlayer[i].SetActive(!IsLocalPlayer);
+        }
 
         PlayerController = GetComponent<PlayerController>();
         PlayerWeaponController = GetComponent<PlayerWeaponController>();

@@ -105,11 +105,21 @@ public class PlayerController : NetworkBehaviour
         Vector3 cameraRotation = cameraTransform.eulerAngles;
 
         Vector3 finalPlayerRotation = new Vector3(playerRotation.x, playerRotation.y + mouseDelta.x, 0);
-        finalPlayerRotation = new Vector3(GameHelper.ClampAngle(finalPlayerRotation.x, -90f, 90f), finalPlayerRotation.y, finalPlayerRotation.z);
+        finalPlayerRotation = new Vector3(finalPlayerRotation.x, finalPlayerRotation.y, finalPlayerRotation.z);
 
         Vector3 finalCameraRotation = new Vector3(cameraRotation.x - mouseDelta.y, cameraRotation.y, 0);
         finalCameraRotation = new Vector3(GameHelper.ClampAngle(finalCameraRotation.x, -90f, 90f), finalCameraRotation.y, finalCameraRotation.z);
 
+        //TODO : Remove when there are no issues in rotation snapping.
+        if(Vector2.Distance(cameraTransform.rotation.eulerAngles, finalCameraRotation) > 50f)
+        {
+            Debug.Log($"Prev Cam Rot {cameraTransform.rotation.eulerAngles} and now {finalCameraRotation}");
+        }
+
+        if (Vector2.Distance(playerTransform.rotation.eulerAngles, finalPlayerRotation) > 50f)
+        {
+            Debug.Log($"Prev Player Rot {playerTransform.rotation.eulerAngles} and now {finalPlayerRotation}");
+        }
         cameraTransform.rotation = Quaternion.Euler(finalCameraRotation);
         playerTransform.rotation = Quaternion.Euler(finalPlayerRotation);
     }

@@ -10,11 +10,13 @@ public class AmmoView : MonoBehaviour
     private void OnEnable()
     {
         WeaponController.OnCurrentWeaponDataChanged += UpadteWeaponUI;
+        PlayerWeaponController.OnNewWeaponEquipped += UpadteWeaponUI;
     }
 
     private void OnDisable()
     {
         WeaponController.OnCurrentWeaponDataChanged -= UpadteWeaponUI;
+        PlayerWeaponController.OnNewWeaponEquipped -= UpadteWeaponUI;
     }
 
     private void UpadteWeaponUI(int currentBullets, int magSize)

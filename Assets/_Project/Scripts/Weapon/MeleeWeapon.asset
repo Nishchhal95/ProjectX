@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: MeleeWeapon
   m_EditorClassIdentifier: 
   weaponID: 2
-  weaponName: 
-  modelPrefab: {fileID: 100000, guid: f81b15b0bffc31d40a877a3c1512423d, type: 3}
+  weaponName: Knife
   damage: 100
   fireRate: 1
   attackDistance: 2
   totalAmmo: -1
   magCapacity: -1
+  reloadAble: 0

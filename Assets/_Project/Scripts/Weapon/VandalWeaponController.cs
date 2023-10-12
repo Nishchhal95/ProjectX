@@ -4,7 +4,5 @@ using UnityEngine;
 
 public class VandalWeaponController : WeaponController
 {
-    public VandalWeaponController(WeaponData weaponData) : base(weaponData)
-    {
-    }
+    
 }
